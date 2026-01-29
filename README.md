@@ -1,10 +1,26 @@
-# Flask API Service Starter
+# Colony Counter Application (Cocoa)
 
-This is a minimal Flask API service starter based on [Google Cloud Run Quickstart](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-python-service).
+This is a simple application to count colonies in a picture.
 
-## Getting Started
+## Setup
 
-Server should run automatically when starting a workspace. To run manually, run:
-```sh
-./devserver.sh
-```
+1. Ensure you have Python installed and the virtual environment activated
+
+2. Install the required dependencies:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3. Run the application:
+
+   ```bash
+   flask run --app main
+   ```
+
+## How to use
+
+1. Open the application in your browser ```text http://localhost:8000```.
+2. Click on the "Examinar" button.
+3. Select the image you want to count colonies in.
+4. Click on the "Contar Colonies" button.
