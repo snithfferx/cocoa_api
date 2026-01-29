@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify,current_app
-from modules.colonies.coloniesController import countColoniesByQuarters
+from services.counter_service import countColoniesByQuarters
 from flask_jwt_extended import jwt_required
 from flask_cors import cross_origin
 from middlewares.req_res import get_json, success, bad_request
@@ -16,7 +16,7 @@ def origin():
 
 @counterBp.route('/process', methods=['POST'])
 @jwt_required()
-@cross_origin(origins=lambda: origin(), supports_credentials=True)
+@cross_origin(supports_credentials=True)
 def getColonies():
     try:
         data = get_json()
@@ -38,22 +38,21 @@ def getColonies():
             blob = bucket.blob(f"samples/{file.filename}")
 
             contenido = file.read()
-            result = countColoniesByQuarters(user,name,description,BytesIO(contenido), sensibility=sensibility,cuadrantes=(quarters,quarters))
-            """ {media, img_base64, colonias_totales, colonias_imagenes} """
+            media, img_base64, colonias_totales, colonias_imagenes = result
             return success({
-                    'avg': result['media'],
-                    'ovi':result['img_base64'],
+                    'avg': media,
+                    'ovi': img_base64,
                     'totals':{
-                        'quarters': [f"Cuadrante {i+1}" for i in range(len(result['colonias_totales']))],
-                        'values': result['colonias_totales'],
-                        'images': result['colonias_imagenes']
+                        'quarters': [f"Cuadrante {i+1}" for i in range(len(colonias_totales))],
+                        'values': colonias_totales,
+                        'images': colonias_imagenes
                     },
                     'name': name
                 }, 200)
     except Exception as e:
         return bad_request(str(e))
     
-@samplesBp.route('/', methods=['GET'])
+@counterBp.route('/', methods=['GET'])
 def get_samples():
     try:
         db = get_db()
