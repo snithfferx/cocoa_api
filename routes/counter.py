@@ -15,7 +15,7 @@ def origin():
     return current_app.config.get("ALLOWED_ORIGIN", "*")
 
 @counterBp.route('/process', methods=['POST'])
-@jwt_required()
+@firebase_auth_required
 @cross_origin(supports_credentials=True)
 def getColonies():
     try:
@@ -53,6 +53,8 @@ def getColonies():
         return bad_request(str(e))
     
 @counterBp.route('/', methods=['GET'])
+@firebase_auth_required
+@cross_origin(supports_credentials=True)
 def get_samples():
     try:
         db = get_db()

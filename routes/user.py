@@ -11,12 +11,12 @@ from flask import current_app
 userBp = Blueprint("userBp", __name__, url_prefix="/user")
 
 @userBp.route("/admin-only", methods=["GET"])
-@requires_role("admin")
+@firebase_auth_required
 def only_admins():
     return success({"ok": True, "message": "Acceso autorizado para administradores"})
 
 @userBp.route("/profile", methods=["GET"])
-@jwt_required()
+@firebase_auth_required
 @cross_origin(supports_credentials=True)
 def profile():
     data = get_json()
@@ -29,7 +29,7 @@ def profile():
     return success(user)
 
 @userBp.route("/me", methods=["GET"])
-@jwt_required()
+@firebase_auth_required
 @cross_origin(supports_credentials=True)
 def me():
     verify_jwt_in_request()

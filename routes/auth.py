@@ -86,7 +86,7 @@ def logout():
         response.set_cookie('session', '', expires=0)
         return response
 
-@authBp.route("/session-verify", methods=["GET"])
+@authBp.route("/verify", methods=["GET"])
 def verify_session():
     session_cookie = request.cookies.get('session')
     if not session_cookie:
