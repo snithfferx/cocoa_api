@@ -17,7 +17,7 @@ def firebase_auth_required(f):
         
         try:
             decoded_token = firebase_auth.verify_id_token(id_token)
-            g.user_id = decoded_token['uid']
+            g.user = decoded_token['uid']
             g.user_email = decoded_token.get('email')
         except Exception as e:
             return jsonify({"error": "Unauthorized", "message": str(e)}), 401
