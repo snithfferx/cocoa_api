@@ -1,0 +1,12 @@
+# IDE
+.idx
+.vscode
+
+# Cache
+__pycache__
+
+# config
+.env
+
+# enviroment
+.venv
