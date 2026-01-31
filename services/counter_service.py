@@ -17,10 +17,16 @@ def process_sample_image(image_bytes, sectors=1, sensitivity=50):
     if img is None:
         raise ValueError("No se pudo decodificar la imagen.")
 
-    # Redimensionar la imagen a 800x800 píxeles
-    img = cv2.resize(img, (800, 800))
+    # Forzado ancho máximo de 800px manteniendo la proporción
+    max_width = 800
+    if img.shape[1] > max_width:
+        ratio = max_width / float(img.shape[1])
+        # Redimensionar la imagen a 800x800 píxeles
+        dim = (max_width, int(img.shape[0] * ratio))
+        img = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
+        #img = cv2.resize(img, (800, 800))
 
-    # 1. Escala de grises y mejora de contraste
+    # Escala de grises y mejora de contraste
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     contrast = improveContrast(gray)
     blurred = cv2.GaussianBlur(contrast, (5, 5), 0)
