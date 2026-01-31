@@ -31,15 +31,15 @@ def process_sample_image(image_bytes, sectors=1, sensitivity=50):
     contrast = improveContrast(gray)
     blurred = cv2.GaussianBlur(contrast, (5, 5), 0)
     
-    # 2. Umbralizado
+    # Umbralizado
     threshold_value = 255 - int((sensitivity / 100) * 150 + 20) 
     _, thresh = cv2.threshold(blurred, threshold_value, 255, cv2.THRESH_BINARY_INV)
     
-    # 3. Morfología
+    # Morfología
     kernel = np.ones((3, 3), np.uint8)
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=1)
     
-    # 4. Encontrar contornos
+    # Encontrar contornos
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     points = []
