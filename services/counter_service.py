@@ -17,6 +17,9 @@ def process_sample_image(image_bytes, sectors=1, sensitivity=50):
     if img is None:
         raise ValueError("No se pudo decodificar la imagen.")
 
+    # Redimensionar la imagen a 800x800 píxeles
+    img = cv2.resize(img, (800, 800))
+
     # 1. Escala de grises y mejora de contraste
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     contrast = improveContrast(gray)
